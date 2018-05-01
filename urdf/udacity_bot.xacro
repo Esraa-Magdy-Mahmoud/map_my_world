@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 
 <robot name="udacity_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-<xacro:include filename="$(find where_am_i)/urdf/udacity_bot.gazebo" />
+<xacro:include filename="$(find slam_project)/urdf/udacity_bot.gazebo" />
 
   <link name="robot_footprint"></link>
 
@@ -168,7 +168,8 @@
 
 
 
-    <link name='camera'>
+
+    <link name='camera_link'>
     <pose>0 0 0.1 0 0 0</pose>
     <inertial>
       <mass value="0.1"/>
@@ -195,10 +196,17 @@
 
 <joint type="fixed" name="camera_joint">
     <origin xyz="0.2 0 0" rpy="0 0 0"/>
-    <child link="camera"/>
+    <child link="camera_link"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
   </joint>
+<link name="rgbd_frame"></link>
+<joint name="rgbd_joint" type="fixed">
+   <origin xyz="0 0 0" rpy="-1.5707 0 -1.5707"/>
+   <parent link="camera_link"/>
+   <child link="rgbd_frame"/>
+</joint>
+
 
 
    <link name='hokuyo'>
@@ -221,7 +229,7 @@
      <visual name='hokuyo_visual'>
       <origin xyz="0.0 0 0" rpy=" 0 0 0"/>
       <geometry>
-        <mesh filename="package://where_am_i/meshes/hokuyo.dae"/>
+        <mesh filename="package://slam_project/meshes/hokuyo.dae"/>
       </geometry>
     </visual>
    </link>
